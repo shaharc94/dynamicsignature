@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Signature</title>
+</head>
+<body style="margin: 20px;">
+    <div id="signature"></div>
+
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const name = params.get('name') || '';
+            const title = params.get('title') || '';
+            const email = params.get('email') || '';
+            const phone = params.get('phone') || '';
+            const logo = params.get('logo') || '';
+            const logoPosition = params.get('logoPosition') || 'left';
+            
+            let signatureHTML = '';
+            
+            // Add logo if exists
+            if (logo && (logoPosition === 'top' || logoPosition === 'left')) {
+                signatureHTML += `<img src="${logo}" alt="Company Logo" style="display: block; margin: ${logoPosition === 'top' ? '0 0 10px 0' : '0 10px 0 0'};"><br>`;
+            }
+            
+            // Basic signature content
+            signatureHTML += `
+                <div style="display: ${logoPosition === 'left' || logoPosition === 'right' ? 'inline-block' : 'block'}; font-family: Arial, sans-serif;">
+                    <strong style="font-size: 16px;">${name}</strong><br>
+                    <em style="color: #666;">${title}</em><br>
+                    Email: <a href="mailto:${email}">${email}</a><br>
+                    Phone: ${phone}
+                </div>
+            `;
+            
+            // Add logo for right/bottom position
+            if (logo && (logoPosition === 'bottom' || logoPosition === 'right')) {
+                signatureHTML += `<img src="${logo}" alt="Company Logo" style="display: block; margin: ${logoPosition === 'bottom' ? '10px 0 0 0' : '0 0 0 10px'};">`;
+            }
+            
+            document.getElementById('signature').innerHTML = signatureHTML;
+        };
+    </script>
+</body>
+</html>
